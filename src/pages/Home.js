@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import Categories from '../components/Categories';
 
 export default class Home extends React.Component {
   state = {
@@ -10,6 +11,7 @@ export default class Home extends React.Component {
     const { productList } = this.state;
     return (
       <div>
+        <Categories />
         <input
           type="text"
         />
