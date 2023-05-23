@@ -1,28 +1,12 @@
 import React, { Component } from 'react';
-import { getCategories } from '../services/api';
+import PropTypes from 'prop-types';
 
 export default class Categories extends Component {
-  state = {
-    categoriesList: [],
-  };
-
-  componentDidMount() {
-    this.getCategoriesApi();
-  }
-
-  getCategoriesApi = async () => {
-    const categoriesList = await getCategories();
-    // console.log(categoriesList);
-    this.setState({
-      categoriesList,
-    });
-  };
-
   render() {
     const categoryKey = 'id';
-    const { categoriesList } = this.state;
+    const { categoriesList, selectedCategory, onCategoryChange } = this.props;
     return (
-      <div>
+      <form className="categories-form">
         {
           categoriesList.map((category) => (
             <label
@@ -31,12 +15,24 @@ export default class Categories extends Component {
               key={ category[categoryKey] }
             >
               { category.name }
-              <input type="radio" name=" Categorias: " id={ category[categoryKey] } />
+              <input
+                type="radio"
+                value={ category[categoryKey] }
+                checked={ selectedCategory === category[categoryKey] }
+                onChange={ onCategoryChange }
+                id={ category[categoryKey] }
+              />
             </label>
           ))
         }
 
-      </div>
+      </form>
     );
   }
 }
+
+Categories.propTypes = {
+  categoriesList: PropTypes.instanceOf(Array).isRequired,
+  selectedCategory: PropTypes.string.isRequired,
+  onCategoryChange: PropTypes.func.isRequired,
+};
