@@ -4,11 +4,11 @@ import ProductCard from './ProductCard';
 
 export default class ProductCardList extends React.Component {
   render() {
-    const { productList } = this.props;
+    const { productsToRender } = this.props;
     return (
       <ul className="product-list">
         {
-          productList.map((product) => {
+          productsToRender.map((product) => {
             const { id, title, thumbnail, price } = product;
             return (
               <ProductCard
@@ -26,7 +26,7 @@ export default class ProductCardList extends React.Component {
 }
 
 ProductCardList.propTypes = {
-  productList: PropTypes.arrayOf(
+  productsToRender: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
