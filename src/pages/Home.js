@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { RiShoppingCartLine, RiSearchLine } from 'react-icons/ri';
+import PropTypes from 'prop-types';
 import Categories from '../components/Categories';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 import ProductCardList from '../components/ProductCardList';
@@ -56,6 +56,11 @@ export default class Home extends React.Component {
     });
   };
 
+  toShoppingCart = () => {
+    const { history } = this.props;
+    history.push('/Cart');
+  };
+
   render() {
     const {
       fetchedProductList,
@@ -97,12 +102,13 @@ export default class Home extends React.Component {
             <RiSearchLine />
           </button>
         </form>
-        <Link
-          to="/cart"
+        <button
+          type="button"
           data-testid="shopping-cart-button"
+          onClick={ this.toShoppingCart }
         >
           <RiShoppingCartLine />
-        </Link>
+        </button>
         {
           showProducts && (
             fetchedProductList.length === 0
@@ -117,3 +123,9 @@ export default class Home extends React.Component {
     );
   }
 }
+
+Home.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
