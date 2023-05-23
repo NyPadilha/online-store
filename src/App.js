@@ -8,7 +8,7 @@ export default class App extends React.Component {
     return (
       <Switch>
         <Route exact path="/" component={ Home } />
-        <Route exact path="/cart" component={ Cart } />
+        <Route path="/cart" component={ Cart } />
       </Switch>
     );
   }
