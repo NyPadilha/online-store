@@ -1,5 +1,5 @@
 const URL_CAT = 'https://api.mercadolibre.com/sites/MLB/categories';
-const URL_QUERY = 'https://api.mercadolibre.com/sites/MLB/search?q=$QUERY';
+const URL_QUERY = 'https://api.mercadolibre.com/sites/MLB/search?q=';
 
 export async function getCategories() {
   // Implemente aqui
@@ -8,9 +8,9 @@ export async function getCategories() {
   return data;
 }
 
-export async function getProductsFromCategoryAndQuery(/* categoryId, query */) {
+export async function getProductsFromCategoryAndQuery(/* categoryId, */ query) {
   // Implemente aqui! Quando o fizer, descomente os parâmetros que essa função recebe
-  const response = await fetch(URL_QUERY);
+  const response = await fetch(URL_QUERY + query);
   const data = response.json();
   return data;
 }
