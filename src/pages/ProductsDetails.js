@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { RiShoppingCartLine } from 'react-icons/ri';
 import { getProductById } from '../services/api';
 
 export default class ProductsDetails extends React.Component {
@@ -20,20 +21,42 @@ export default class ProductsDetails extends React.Component {
     });
   };
 
+  toShoppingCart = () => {
+    const { history } = this.props;
+    history.push('/Cart');
+  };
+
   render() {
-    const { products } = this.state;
+    const { products: { title, thumbnail, price } } = this.state;
+    const { addProductToCart } = this.props;
     return (
       <div className="products-details">
+        <header className="header-details">
+          <h1 className="detailstitle">Detalhes do produto</h1>
+          <button
+            type="button"
+            data-testid="shopping-cart-button"
+            onClick={ this.toShoppingCart }
+          >
+            <RiShoppingCartLine />
+          </button>
+        </header>
         <p data-testid="product-detail-name">
-          { products.title }
+          { title }
         </p>
         <img
           data-testid="product-detail-image"
-          src={ products.thumbnail }
-          alt={ products.title }
+          src={ thumbnail }
+          alt={ title }
         />
-        <p data-testid="product-detail-price">{ products.price }</p>
-        <button data-testid="shopping-cart-button">Adicionar ao carrinho</button>
+        <p data-testid="product-detail-price">{ price }</p>
+        <button
+          data-testid="product-detail-add-to-cart"
+          type="button"
+          onClick={ () => addProductToCart(title, thumbnail, price) }
+        >
+          Adicionar ao carrinho
+        </button>
       </div>
     );
   }
@@ -43,5 +66,9 @@ ProductsDetails.propTypes = {
     params: PropTypes.shape({
       id: PropTypes.string,
     }),
+  }).isRequired,
+  addProductToCart: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
   }).isRequired,
 };

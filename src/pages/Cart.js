@@ -19,30 +19,30 @@ export default class Cart extends React.Component {
   render() {
     const { cart } = this.state;
     return (
-      <div>
+      <div className="cart-wrapper">
         { cart.length === 0
           ? <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
           : (
-            <section>
-              <h2>shopping cart</h2>
-              <section>
+            <section className="cart">
+              <h1>Carrinho de compras</h1>
+              <ul className="cart-list">
                 {
                   cart.map(({ title, price, thumbnail, amount }) => (
-                    <div key={ title } className="product-item">
-                      <h4 data-testid="shopping-cart-product-name">{ title }</h4>
+                    <li key={ title } className="product-item">
+                      <p data-testid="shopping-cart-product-name">{ title }</p>
                       <img src={ thumbnail } alt={ title } />
-                      <h5>{ `R$ ${price}` }</h5>
-                      <h5
+                      <p>{ `R$ ${price}` }</p>
+                      <p
                         data-testid="shopping-cart-product-quantity"
                       >
                         { `Quantidade: ${amount}` }
 
-                      </h5>
-                    </div>
+                      </p>
+                    </li>
 
                   ))
                 }
-              </section>
+              </ul>
             </section>)}
       </div>
     );
