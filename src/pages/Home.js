@@ -51,7 +51,6 @@ export default class Home extends React.Component {
   onCategoryChange = ({ target }) => {
     this.setState({ selectedCategory: target.value }, async () => {
       const { selectedCategory } = this.state;
-      console.log(selectedCategory);
       await this.getProductsFromQueryOrCat(selectedCategory, null);
     });
   };
@@ -69,6 +68,8 @@ export default class Home extends React.Component {
       categoriesList,
       selectedCategory,
     } = this.state;
+
+    const { addProductToCart } = this.props;
 
     return (
       <div className="home-wrapper">
@@ -115,7 +116,10 @@ export default class Home extends React.Component {
               ? <h1>Nenhum produto foi encontrado</h1>
               : (
                 <div className="results-wrapper">
-                  <ProductCardList productsToRender={ fetchedProductList } />
+                  <ProductCardList
+                    productsToRender={ fetchedProductList }
+                    addProductToCart={ addProductToCart }
+                  />
                 </div>)
           )
         }
@@ -128,4 +132,5 @@ Home.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  addProductToCart: PropTypes.func.isRequired,
 };

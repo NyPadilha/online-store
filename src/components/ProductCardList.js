@@ -4,7 +4,7 @@ import ProductCard from './ProductCard';
 
 export default class ProductCardList extends React.Component {
   render() {
-    const { productsToRender } = this.props;
+    const { productsToRender, addProductToCart } = this.props;
     return (
       <ul className="product-list">
         {
@@ -13,9 +13,11 @@ export default class ProductCardList extends React.Component {
             return (
               <ProductCard
                 key={ id }
+                id={ id }
                 title={ title }
                 thumbnail={ thumbnail }
                 price={ price }
+                addProductToCart={ addProductToCart }
               />
             );
           })
@@ -34,4 +36,5 @@ ProductCardList.propTypes = {
       price: PropTypes.number.isRequired,
     }),
   ).isRequired,
+  addProductToCart: PropTypes.func.isRequired,
 };
