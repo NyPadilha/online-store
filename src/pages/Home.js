@@ -16,6 +16,9 @@ export default class Home extends React.Component {
 
   componentDidMount() {
     this.getCategoriesApi();
+
+    const { howMuchInCart } = this.props;
+    howMuchInCart();
   }
 
   onInputChange = ({ target }) => {
@@ -69,7 +72,7 @@ export default class Home extends React.Component {
       selectedCategory,
     } = this.state;
 
-    const { addProductToCart } = this.props;
+    const { addProductToCart, quantityOfItems } = this.props;
 
     return (
       <div className="home-wrapper">
@@ -109,6 +112,12 @@ export default class Home extends React.Component {
           onClick={ this.toShoppingCart }
         >
           <RiShoppingCartLine />
+          <p
+            data-testid="shopping-cart-size"
+            className="quantity"
+          >
+            { quantityOfItems }
+          </p>
         </button>
         {
           showProducts && (
@@ -133,4 +142,6 @@ Home.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
   addProductToCart: PropTypes.func.isRequired,
+  howMuchInCart: PropTypes.func.isRequired,
+  quantityOfItems: PropTypes.number.isRequired,
 };

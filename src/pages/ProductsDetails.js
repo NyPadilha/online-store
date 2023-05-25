@@ -14,6 +14,9 @@ export default class ProductsDetails extends React.Component {
 
   componentDidMount() {
     this.productsById();
+
+    const { howMuchInCart } = this.props;
+    howMuchInCart();
   }
 
   handleRatingChange = (ratingValue) => {
@@ -49,8 +52,8 @@ export default class ProductsDetails extends React.Component {
   };
 
   render() {
-    const { products: { title, thumbnail, price }, rating, hover } = this.state;
-    const { addProductToCart } = this.props;
+    const { products: { title, thumbnail, price, availableAmount }, rating, hover } = this.state;
+    const { addProductToCart, quantityOfItems } = this.props;
     return (
       <div className="products-details">
         <header className="header-details">
@@ -61,6 +64,12 @@ export default class ProductsDetails extends React.Component {
             onClick={ this.toShoppingCart }
           >
             <RiShoppingCartLine />
+            <p
+              data-testid="shopping-cart-size"
+              className="quantity"
+            >
+              { quantityOfItems }
+            </p>
           </button>
         </header>
         <p data-testid="product-detail-name">
@@ -75,7 +84,7 @@ export default class ProductsDetails extends React.Component {
         <button
           data-testid="product-detail-add-to-cart"
           type="button"
-          onClick={ () => addProductToCart(title, thumbnail, price) }
+          onClick={ () => addProductToCart(title, thumbnail, price, availableAmount) }
         >
           Adicionar ao carrinho
         </button>
@@ -103,4 +112,6 @@ ProductsDetails.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  howMuchInCart: PropTypes.func.isRequired,
+  quantityOfItems: PropTypes.number.isRequired,
 };

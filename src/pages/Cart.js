@@ -2,6 +2,7 @@ import React from 'react';
 import { IoRemoveSharp, IoAddOutline } from 'react-icons/io5';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import '../Css/Cart.css';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default class Cart extends React.Component {
   state = {
@@ -25,7 +26,9 @@ export default class Cart extends React.Component {
     const index = cart.findIndex(
       (find) => find.title === e.target.parentNode.children[0].innerHTML,
     );
-    update[index].amount += 1;
+    if (update[index].availableAmount > update[index].amount) {
+      update[index].amount += 1;
+    }
     this.setState({
       cart: update,
     }, () => {
@@ -100,6 +103,9 @@ export default class Cart extends React.Component {
                 }
               </ul>
             </section>)}
+        <Link to="/checkout" className="to-checkout" data-testid="checkout-products">
+          Finalizar compra
+        </Link>
       </div>
     );
   }

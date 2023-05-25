@@ -17,6 +17,7 @@ export default class ProductCardList extends React.Component {
                 title={ title }
                 thumbnail={ thumbnail }
                 price={ price }
+                availableAmount={ product.available_quantity }
                 addProductToCart={ addProductToCart }
               />
             );
@@ -34,6 +35,7 @@ ProductCardList.propTypes = {
       title: PropTypes.string.isRequired,
       thumbnail: PropTypes.string.isRequired,
       price: PropTypes.number.isRequired,
+      available_quantity: PropTypes.number.isRequired,
     }),
   ).isRequired,
   addProductToCart: PropTypes.func.isRequired,
