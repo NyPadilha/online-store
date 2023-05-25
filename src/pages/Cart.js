@@ -2,6 +2,7 @@ import React from 'react';
 import { IoRemoveSharp, IoAddOutline } from 'react-icons/io5';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import '../Css/Cart.css';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default class Cart extends React.Component {
   state = {
@@ -102,6 +103,9 @@ export default class Cart extends React.Component {
                 }
               </ul>
             </section>)}
+        <Link to="/checkout" className="to-checkout" data-testid="checkout-products">
+          Finalizar compra
+        </Link>
       </div>
     );
   }
