@@ -2,15 +2,37 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { RiShoppingCartLine } from 'react-icons/ri';
 import { getProductById } from '../services/api';
+import Form from '../components/Form';
+// import StarRating from '../components/StarRating';
 
 export default class ProductsDetails extends React.Component {
   state = {
     products: [],
+    rating: 0,
+    hover: 0,
   };
 
   componentDidMount() {
     this.productsById();
   }
+
+  handleRatingChange = (ratingValue) => {
+    this.setState({
+      rating: ratingValue,
+    });
+  };
+
+  handleMouseEnter = (ratingValue) => {
+    this.setState({
+      hover: ratingValue,
+    });
+  };
+
+  handleMouseLeave = () => {
+    this.setState({
+      hover: 0,
+    });
+  };
 
   productsById = async () => {
     const { match } = this.props;
@@ -27,7 +49,7 @@ export default class ProductsDetails extends React.Component {
   };
 
   render() {
-    const { products: { title, thumbnail, price } } = this.state;
+    const { products: { title, thumbnail, price }, rating, hover } = this.state;
     const { addProductToCart } = this.props;
     return (
       <div className="products-details">
@@ -57,6 +79,16 @@ export default class ProductsDetails extends React.Component {
         >
           Adicionar ao carrinho
         </button>
+
+        <p>Avaliações</p>
+
+        <Form
+          rating={ rating }
+          hover={ hover }
+          handleMouseEnter={ this.handleMouseEnter }
+          handleMouseLeave={ this.handleMouseLeave }
+          handleRatingChange={ this.handleRatingChange }
+        />
       </div>
     );
   }
