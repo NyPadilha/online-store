@@ -6,6 +6,8 @@ import ProductsDetails from './pages/ProductsDetails';
 import Checkout from './pages/Checkout';
 
 export default class App extends React.Component {
+  state = { quantityOfItems: 0 };
+
   addProductToCart = (title, thumbnail, price, availableAmount) => {
     const products = JSON.parse(localStorage.getItem('productsCart') || '[]');
 
@@ -25,9 +27,22 @@ export default class App extends React.Component {
     }
 
     localStorage.setItem('productsCart', JSON.stringify(products));
+
+    this.howMuchInCart();
+  };
+
+  howMuchInCart = () => {
+    const productsInCart = JSON.parse(localStorage.getItem('productsCart'));
+    if (!productsInCart) return;
+
+    const quantityOfItems = productsInCart
+      .reduce((quantity, { amount }) => quantity + amount, 0);
+    this.setState({ quantityOfItems });
   };
 
   render() {
+    const { quantityOfItems } = this.state;
+
     return (
       <Switch>
         <Route
@@ -38,6 +53,8 @@ export default class App extends React.Component {
               <Home
                 { ...props }
                 addProductToCart={ this.addProductToCart }
+                howMuchInCart={ this.howMuchInCart }
+                quantityOfItems={ quantityOfItems }
               />)
           }
         />
@@ -49,6 +66,8 @@ export default class App extends React.Component {
               <ProductsDetails
                 { ...props }
                 addProductToCart={ this.addProductToCart }
+                howMuchInCart={ this.howMuchInCart }
+                quantityOfItems={ quantityOfItems }
               />)
           }
         />
