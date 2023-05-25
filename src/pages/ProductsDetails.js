@@ -27,7 +27,7 @@ export default class ProductsDetails extends React.Component {
   };
 
   render() {
-    const { products: { title, thumbnail, price } } = this.state;
+    const { products: { title, thumbnail, price, availableAmount } } = this.state;
     const { addProductToCart } = this.props;
     return (
       <div className="products-details">
@@ -53,7 +53,7 @@ export default class ProductsDetails extends React.Component {
         <button
           data-testid="product-detail-add-to-cart"
           type="button"
-          onClick={ () => addProductToCart(title, thumbnail, price) }
+          onClick={ () => addProductToCart(title, thumbnail, price, availableAmount) }
         >
           Adicionar ao carrinho
         </button>

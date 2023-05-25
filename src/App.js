@@ -5,7 +5,7 @@ import Cart from './pages/Cart';
 import ProductsDetails from './pages/ProductsDetails';
 
 export default class App extends React.Component {
-  addProductToCart = (title, thumbnail, price) => {
+  addProductToCart = (title, thumbnail, price, availableAmount) => {
     const products = JSON.parse(localStorage.getItem('productsCart') || '[]');
 
     const existingProduct = products.find((product) => product.title === title);
@@ -18,6 +18,7 @@ export default class App extends React.Component {
         thumbnail,
         price,
         amount: 1,
+        availableAmount,
       };
       products.push(newProduct);
     }

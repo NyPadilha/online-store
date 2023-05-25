@@ -25,7 +25,9 @@ export default class Cart extends React.Component {
     const index = cart.findIndex(
       (find) => find.title === e.target.parentNode.children[0].innerHTML,
     );
-    update[index].amount += 1;
+    if (update[index].availableAmount > update[index].amount) {
+      update[index].amount += 1;
+    }
     this.setState({
       cart: update,
     }, () => {
