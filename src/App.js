@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import ProductsDetails from './pages/ProductsDetails';
+import Checkout from './pages/Checkout';
 
 export default class App extends React.Component {
   addProductToCart = (title, thumbnail, price) => {
@@ -50,6 +51,7 @@ export default class App extends React.Component {
               />)
           }
         />
+        <Route path="/checkout" component={ Checkout } />
       </Switch>
     );
   }

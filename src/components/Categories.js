@@ -25,7 +25,6 @@ export default class Categories extends Component {
             </label>
           ))
         }
-
       </form>
     );
   }
