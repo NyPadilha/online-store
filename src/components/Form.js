@@ -3,57 +3,70 @@ import React from 'react';
 import StarRating from './StarRating';
 
 export default class Form extends React.Component {
+  onCustomSubmit = (event) => {
+    const { onReviewBtnClick } = this.props;
+    event.preventDefault();
+    onReviewBtnClick();
+  };
+
   render() {
     const {
-      rating,
+      ratingState,
       hover,
       handleRatingChange,
       handleMouseEnter,
       handleMouseLeave,
+      emailReview,
+      textReview,
+      onInputReviewChange,
+      showFormError,
     } = this.props;
 
     return (
-      <div>
-        <form>
-          <label htmlFor="email">
+      <div className="form-wrapper">
+        <p className="review-title">Avaliação</p>
+        <form
+          className="form-review"
+          onSubmit={ this.onCustomSubmit }
+        >
+          <div className="ratingState-email">
             <input
-              id="email"
-              type="email"
-              name="email"
+              type="text"
+              name="emailReview"
+              value={ emailReview }
               data-testid="product-detail-email"
-              placeholder="E-mail"
+              placeholder="Email"
+              onChange={ onInputReviewChange }
             />
-
-          </label>
-          <div className="forms">
             <StarRating
-              rating={ rating }
+              ratingState={ ratingState }
               hover={ hover }
               handleMouseEnter={ handleMouseEnter }
               handleMouseLeave={ handleMouseLeave }
               handleRatingChange={ handleRatingChange }
             />
           </div>
-
-          <label htmlFor="avaliacao">
-            <textarea
-              id="avaliacao"
-              type="text"
-              name="text"
-              data-testid="product-detail-evaluation"
-              placeholder="Mensagem (opcional)"
-            />
-          </label>
-
+          <textarea
+            id="avaliacao"
+            type="text"
+            name="textReview"
+            value={ textReview }
+            data-testid="product-detail-evaluation"
+            placeholder="Mensagem (opcional)"
+            onChange={ onInputReviewChange }
+          />
+          {
+            showFormError
+              && <p data-testid="error-msg" className="error-msg">Campos inválidos</p>
+          }
           <button
             type="submit"
-            value="Avaliar"
             data-testid="submit-review-btn"
+            className="review-btn"
+            onSubmit={ this.onCustomSubmit }
           >
             Avaliar
           </button>
-
-          {/* {errorMsg && <p data-testid="error-msg">Campos Inválidos</p>} */}
         </form>
       </div>
     );
@@ -65,5 +78,10 @@ Form.propTypes = {
   handleMouseLeave: PropTypes.func.isRequired,
   handleRatingChange: PropTypes.func.isRequired,
   hover: PropTypes.number.isRequired,
-  rating: PropTypes.number.isRequired,
+  ratingState: PropTypes.number.isRequired,
+  emailReview: PropTypes.string.isRequired,
+  textReview: PropTypes.string.isRequired,
+  onInputReviewChange: PropTypes.func.isRequired,
+  onReviewBtnClick: PropTypes.func.isRequired,
+  showFormError: PropTypes.bool.isRequired,
 };

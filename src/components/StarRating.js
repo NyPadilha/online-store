@@ -6,7 +6,7 @@ import './StarRating.css';
 export default class StarRating extends React.Component {
   render() {
     const {
-      rating,
+      ratingState,
       hover,
       handleRatingChange,
       handleMouseEnter,
@@ -14,24 +14,24 @@ export default class StarRating extends React.Component {
     } = this.props;
     const stars = 5;
     return (
-      <div>
-        {[...Array(stars)].map((star, i) => {
-          const ratingValue = i + 1;
+      <div className="stars-wrapper">
+        {[...Array(stars)].map((star, index) => {
+          const ratingValue = index + 1;
 
           return (
-            <label key={ i }>
+            <label key={ index }>
               <input
-                // style={ { display: 'none' } }
+                data-testid={ `${ratingValue}-rating` }
                 className="stars"
                 type="radio"
-                name="rating"
+                name="ratingState"
                 value={ ratingValue }
                 onClick={ () => handleRatingChange(ratingValue) }
               />
               <FaStar
                 className="star"
                 size={ 25 }
-                color={ ratingValue <= (hover || rating) ? '#ffc107' : '#e4e5e9' }
+                color={ ratingValue <= (hover || ratingState) ? '#ffc107' : '#e4e5e9' }
                 onMouseEnter={ () => handleMouseEnter(ratingValue) }
                 onMouseLeave={ () => handleMouseLeave(0) }
               />
@@ -48,5 +48,5 @@ StarRating.propTypes = {
   handleMouseLeave: PropTypes.func.isRequired,
   handleRatingChange: PropTypes.func.isRequired,
   hover: PropTypes.number.isRequired,
-  rating: PropTypes.number.isRequired,
+  ratingState: PropTypes.number.isRequired,
 };

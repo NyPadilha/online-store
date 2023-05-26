@@ -3,25 +3,29 @@ import React from 'react';
 import { RiShoppingCartLine } from 'react-icons/ri';
 import { getProductById } from '../services/api';
 import Form from '../components/Form';
-// import StarRating from '../components/StarRating';
+import Review from '../components/Review';
 
 export default class ProductsDetails extends React.Component {
   state = {
     products: [],
-    rating: 0,
+    ratingState: 0,
     hover: 0,
+    emailReview: '',
+    textReview: '',
+    showFormError: false,
+    productReviews: [],
   };
 
   componentDidMount() {
+    this.recoverReviews();
     this.productsById();
-
     const { howMuchInCart } = this.props;
     howMuchInCart();
   }
 
   handleRatingChange = (ratingValue) => {
     this.setState({
-      rating: ratingValue,
+      ratingState: ratingValue,
     });
   };
 
@@ -51,8 +55,66 @@ export default class ProductsDetails extends React.Component {
     history.push('/Cart');
   };
 
+  onInputReviewChange = ({ target }) => {
+    const { name, value } = target;
+    this.setState({ [name]: value });
+  };
+
+  validateReview = () => {
+    const { ratingState, emailReview } = this.state;
+
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+    const emailIsvalid = emailRegex.test(emailReview);
+
+    const ratingIsValid = ratingState !== 0;
+
+    return emailIsvalid && ratingIsValid;
+  };
+
+  onReviewBtnClick = () => {
+    const { ratingState, emailReview, textReview } = this.state;
+    const { match: { params: { id } } } = this.props;
+
+    const newReview = { rating: ratingState, email: emailReview, text: textReview };
+
+    if (this.validateReview()) {
+      this.setState((prev) => ({
+        productReviews: [...prev.productReviews, newReview],
+      }), () => {
+        this.setState({ ratingState: 0, emailReview: '', textReview: '' });
+
+        const { productReviews } = this.state;
+        localStorage.setItem(id.toString(), JSON.stringify(productReviews));
+      });
+
+      this.setState({ showFormError: false });
+
+      return;
+    }
+
+    this.setState({ showFormError: true });
+  };
+
+  recoverReviews = () => {
+    const { match: { params: { id } } } = this.props;
+    const recoveredReviews = JSON.parse(localStorage.getItem(id.toString()));
+    if (!recoveredReviews) return;
+    if (recoveredReviews.length > 0) {
+      this.setState({ productReviews: recoveredReviews });
+    }
+  };
+
   render() {
-    const { products: { title, thumbnail, price, availableAmount }, rating, hover } = this.state;
+    const {
+      products: { title, thumbnail, price, availableAmount },
+      ratingState,
+      hover,
+      emailReview,
+      textReview,
+      showFormError,
+      productReviews,
+    } = this.state;
+
     const { addProductToCart, quantityOfItems } = this.props;
     return (
       <div className="products-details">
@@ -88,16 +150,32 @@ export default class ProductsDetails extends React.Component {
         >
           Adicionar ao carrinho
         </button>
-
-        <p>Avaliações</p>
-
         <Form
-          rating={ rating }
+          ratingState={ ratingState }
           hover={ hover }
+          emailReview={ emailReview }
+          textReview={ textReview }
+          onInputReviewChange={ this.onInputReviewChange }
           handleMouseEnter={ this.handleMouseEnter }
           handleMouseLeave={ this.handleMouseLeave }
           handleRatingChange={ this.handleRatingChange }
+          onReviewBtnClick={ this.onReviewBtnClick }
+          showFormError={ showFormError }
         />
+        <div className="reviews-wrapper" />
+        {
+          productReviews.length > 0 && productReviews.map((review, index) => {
+            const { rating, email, text } = review;
+            return (
+              <Review
+                key={ index }
+                rating={ rating }
+                email={ email }
+                text={ text }
+              />
+            );
+          })
+        }
       </div>
     );
   }
