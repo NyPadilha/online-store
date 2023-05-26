@@ -7,7 +7,7 @@ import Review from '../components/Review';
 
 export default class ProductsDetails extends React.Component {
   state = {
-    products: [],
+    product: '',
     ratingState: 0,
     hover: 0,
     emailReview: '',
@@ -18,7 +18,7 @@ export default class ProductsDetails extends React.Component {
 
   componentDidMount() {
     this.recoverReviews();
-    this.productsById();
+    this.productById();
     const { howMuchInCart } = this.props;
     howMuchInCart();
   }
@@ -41,12 +41,12 @@ export default class ProductsDetails extends React.Component {
     });
   };
 
-  productsById = async () => {
+  productById = async () => {
     const { match } = this.props;
     const { params: { id } } = match;
-    const products = await getProductById(id);
+    const product = await getProductById(id);
     this.setState({
-      products,
+      product,
     });
   };
 
@@ -106,7 +106,8 @@ export default class ProductsDetails extends React.Component {
 
   render() {
     const {
-      products: { title, thumbnail, price, availableAmount },
+      product: { title, thumbnail, price, attributes, shipping },
+      product,
       ratingState,
       hover,
       emailReview,
@@ -116,6 +117,9 @@ export default class ProductsDetails extends React.Component {
     } = this.state;
 
     const { addProductToCart, quantityOfItems } = this.props;
+
+    if (!product) return (<h1>Carregando...</h1>);
+
     return (
       <div className="products-details">
         <header className="header-details">
@@ -134,19 +138,65 @@ export default class ProductsDetails extends React.Component {
             </p>
           </button>
         </header>
-        <p data-testid="product-detail-name">
-          { title }
-        </p>
-        <img
-          data-testid="product-detail-image"
-          src={ thumbnail }
-          alt={ title }
-        />
-        <p data-testid="product-detail-price">{ price }</p>
+        <div className="product-wrapper">
+          <div className="product-infos">
+            <p data-testid="product-detail-name">
+              { title }
+            </p>
+            {
+              shipping.free_shipping
+                && (
+                  <p
+                    data-testid="free-shipping"
+                    className="free-shipping"
+                  >
+                    Frete Grátis!
+                  </p>)
+            }
+            <img
+              data-testid="product-detail-image"
+              src={ thumbnail }
+              alt={ title }
+            />
+            <p
+              data-testid="product-detail-price"
+              style={ { display: 'none ' } }
+            >
+              { price }
+            </p>
+            <p
+              className="detail-price"
+            >
+              { `R$ ${price.toFixed(2).replace('.', ',')}` }
+            </p>
+          </div>
+          <div className="details-wrapper">
+            <ul className="details-list">
+              {
+                attributes.map((attribute) => (
+                  <li className="detail-item" key={ attribute.id }>
+                    <p
+                      className="detail-name"
+                    >
+                      { `${attribute.name}: ${attribute.value_name
+                        ? attribute.value_name
+                        : 'Sem informações'}` }
+                    </p>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
         <button
           data-testid="product-detail-add-to-cart"
           type="button"
-          onClick={ () => addProductToCart(title, thumbnail, price, availableAmount) }
+          onClick={ () => addProductToCart(
+            title,
+            thumbnail,
+            price,
+            product.available_quantity,
+          ) }
         >
           Adicionar ao carrinho
         </button>
