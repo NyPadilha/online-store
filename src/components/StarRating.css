@@ -1,19 +1,9 @@
-/* .forms {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 10vh;
-} */
-
-/* input[type="radio"] {
-    display: none;
-} */
-
 .stars {
-    display: none;
+  display: none;
 }
 
 .star {
-    cursor: pointer;
-    transition: color 200ms;
+  cursor: pointer;
+  transition: color 200ms;
 }
+
