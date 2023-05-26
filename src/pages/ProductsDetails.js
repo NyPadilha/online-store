@@ -173,17 +173,14 @@ export default class ProductsDetails extends React.Component {
           <div className="details-wrapper">
             <ul className="details-list">
               {
-                attributes.map((attribute) => (
-                  <li className="detail-item" key={ attribute.id }>
-                    <p
-                      className="detail-name"
-                    >
-                      { `${attribute.name}: ${attribute.value_name
-                        ? attribute.value_name
-                        : 'Sem informações'}` }
-                    </p>
-                  </li>
-                ))
+                attributes.filter((attribute) => attribute.value_name !== null)
+                  .map((attributeMap) => (
+                    <li className="detail-item" key={ attributeMap.id }>
+                      <p className="detail-name">
+                        { `${attributeMap.name}: ${attributeMap.value_name}` }
+                      </p>
+                    </li>
+                  ))
               }
             </ul>
           </div>
