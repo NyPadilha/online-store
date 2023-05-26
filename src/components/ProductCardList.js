@@ -9,7 +9,14 @@ export default class ProductCardList extends React.Component {
       <ul className="product-list">
         {
           productsToRender.map((product) => {
-            const { id, title, thumbnail, price } = product;
+            const {
+              id,
+              title,
+              thumbnail,
+              price,
+              shipping,
+            } = product;
+
             return (
               <ProductCard
                 key={ id }
@@ -17,6 +24,7 @@ export default class ProductCardList extends React.Component {
                 title={ title }
                 thumbnail={ thumbnail }
                 price={ price }
+                shipping={ shipping }
                 availableAmount={ product.available_quantity }
                 addProductToCart={ addProductToCart }
               />
